@@ -4,11 +4,13 @@ import {
   DiscordenoChannel,
   DiscordenoMessage,
   FinalHelpers,
+  ModifyThread,
 } from "./deps.ts";
 import { sendDirectMessage } from "./src/sendDirectMessage.ts";
 import { suppressEmbeds } from "./src/suppressEmbeds.ts";
 import {
   archiveThread,
+  editThread,
   lockThread,
   unarchiveThread,
   unlockThread,
@@ -29,6 +31,12 @@ export interface BotWithHelpersPlugin extends Bot {
     unarchiveThread: (bot: Bot, threadId: bigint) => Promise<DiscordenoChannel>;
     lockThread: (bot: Bot, threadId: bigint) => Promise<DiscordenoChannel>;
     unlockThread: (bot: Bot, threadId: bigint) => Promise<DiscordenoChannel>;
+    editThread: (
+      bot: Bot,
+      threadId: bigint,
+      options: ModifyThread,
+      reason?: string,
+    ) => Promise<DiscordenoChannel>;
   };
 }
 
@@ -51,6 +59,13 @@ export function enableHelpersPlugin(bot: Bot): BotWithHelpersPlugin {
   bot.helpers.lockThread = (threadId: bigint) => lockThread(bot, threadId);
   // @ts-ignore we are dynamically adding this.
   bot.helpers.unlockThread = (threadId: bigint) => unlockThread(bot, threadId);
+  // @ts-ignore we are dynamically adding this.
+  bot.helpers.editThread = (
+    bot: Bot,
+    threadId: bigint,
+    options: ModifyThread,
+    reason?: string,
+  ) => editThread(bot, threadId, options, reason);
 
   return bot as BotWithHelpersPlugin;
 }
