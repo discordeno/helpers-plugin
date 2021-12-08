@@ -9,6 +9,7 @@ import {
   FinalHelpers,
   ListGuildMembers,
   ModifyThread,
+  moveMember,
 } from "./deps.ts";
 import { cloneChannel } from "./src/channels.ts";
 import { sendAutocompleteChoices } from "./src/sendAutoCompleteChoices.ts";
@@ -60,6 +61,11 @@ export interface BotWithHelpersPlugin extends Bot {
       guildId: bigint,
       options: ListGuildMembers & { memberCount: number }
     ) => Promise<Collection<bigint, DiscordenoMember>>;
+    moveMember: (
+      guildId: bigint,
+      memberId: bigint,
+      channelId: bigint
+    ) => Promise<DiscordenoMember>;
   };
 }
 
@@ -96,6 +102,11 @@ export function enableHelpersPlugin(rawBot: Bot): BotWithHelpersPlugin {
     guildId: bigint,
     options: ListGuildMembers & { memberCount: number }
   ) => getMembersPaginated(bot, guildId, options);
+  bot.helpers.moveMember = (
+    guildId: bigint,
+    memberId: bigint,
+    channelId: bigint
+  ) => moveMember(bot, guildId, memberId, channelId);
 
   return bot as BotWithHelpersPlugin;
 }
@@ -107,3 +118,4 @@ export * from "./src/threads.ts";
 export * from "./src/sendAutoCompleteChoices.ts";
 export * from "./src/disconnectMember.ts";
 export * from "./src/getMembersPaginated.ts";
+export * from "./src/moveMember.ts";
