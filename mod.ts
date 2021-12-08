@@ -3,6 +3,7 @@ import {
   Bot,
   CreateMessage,
   DiscordenoChannel,
+  DiscordenoMember,
   DiscordenoMessage,
   FinalHelpers,
   ModifyThread,
@@ -18,6 +19,7 @@ import {
   unarchiveThread,
   unlockThread,
 } from "./src/threads.ts";
+import { disconnectMember } from "./src/disconnectMember.ts";
 
 export interface BotWithHelpersPlugin extends Bot {
   helpers: FinalHelpers & {
@@ -47,6 +49,10 @@ export interface BotWithHelpersPlugin extends Bot {
       interactionToken: string,
       choices: ApplicationCommandOptionChoice[]
     ) => Promise<void>;
+    disconnectMember: (
+      guildId: bigint,
+      memberId: bigint
+    ) => Promise<DiscordenoMember>;
   };
 }
 
@@ -77,6 +83,8 @@ export function enableHelpersPlugin(rawBot: Bot): BotWithHelpersPlugin {
     interactionToken: string,
     choices: ApplicationCommandOptionChoice[]
   ) => sendAutocompleteChoices(bot, interactionId, interactionToken, choices);
+  bot.helpers.disconnectMember = (guildId: bigint, memberId: bigint) =>
+    disconnectMember(bot, guildId, memberId);
 
   return bot as BotWithHelpersPlugin;
 }
