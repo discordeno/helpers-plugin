@@ -1,11 +1,13 @@
 import {
   ApplicationCommandOptionChoice,
   Bot,
+  Collection,
   CreateMessage,
   DiscordenoChannel,
   DiscordenoMember,
   DiscordenoMessage,
   FinalHelpers,
+  ListGuildMembers,
   ModifyThread,
 } from "./deps.ts";
 import { cloneChannel } from "./src/channels.ts";
@@ -20,6 +22,7 @@ import {
   unlockThread,
 } from "./src/threads.ts";
 import { disconnectMember } from "./src/disconnectMember.ts";
+import { getMembersPaginated } from "./src/getMembersPaginated.ts";
 
 export interface BotWithHelpersPlugin extends Bot {
   helpers: FinalHelpers & {
@@ -53,6 +56,10 @@ export interface BotWithHelpersPlugin extends Bot {
       guildId: bigint,
       memberId: bigint
     ) => Promise<DiscordenoMember>;
+    getMembersPaginated: (
+      guildId: bigint,
+      options: ListGuildMembers & { memberCount: number }
+    ) => Promise<Collection<bigint, DiscordenoMember>>;
   };
 }
 
@@ -85,6 +92,10 @@ export function enableHelpersPlugin(rawBot: Bot): BotWithHelpersPlugin {
   ) => sendAutocompleteChoices(bot, interactionId, interactionToken, choices);
   bot.helpers.disconnectMember = (guildId: bigint, memberId: bigint) =>
     disconnectMember(bot, guildId, memberId);
+  bot.helpers.getMembersPaginated = (
+    guildId: bigint,
+    options: ListGuildMembers & { memberCount: number }
+  ) => getMembersPaginated(bot, guildId, options);
 
   return bot as BotWithHelpersPlugin;
 }
@@ -95,3 +106,4 @@ export * from "./src/suppressEmbeds.ts";
 export * from "./src/threads.ts";
 export * from "./src/sendAutoCompleteChoices.ts";
 export * from "./src/disconnectMember.ts";
+export * from "./src/getMembersPaginated.ts";
