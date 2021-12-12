@@ -120,3 +120,4 @@ export * from "./src/sendAutoCompleteChoices.ts";
 export * from "./src/sendDirectMessage.ts";
 export * from "./src/suppressEmbeds.ts";
 export * from "./src/threads.ts";
+export default enableHelpersPlugin;
