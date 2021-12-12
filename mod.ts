@@ -9,7 +9,6 @@ import {
   FinalHelpers,
   ListGuildMembers,
   ModifyThread,
-  moveMember,
 } from "./deps.ts";
 import { cloneChannel } from "./src/channels.ts";
 import { sendAutocompleteChoices } from "./src/sendAutoCompleteChoices.ts";
@@ -24,6 +23,7 @@ import {
 } from "./src/threads.ts";
 import { disconnectMember } from "./src/disconnectMember.ts";
 import { getMembersPaginated } from "./src/getMembersPaginated.ts";
+import { moveMember } from "./src/moveMember.ts";
 
 export interface BotWithHelpersPlugin extends Bot {
   helpers: FinalHelpers & {
@@ -112,10 +112,11 @@ export function enableHelpersPlugin(rawBot: Bot): BotWithHelpersPlugin {
 }
 
 // EXPORT EVERYTHING HERE SO USERS CAN OPT TO USE FUNCTIONS DIRECTLY
-export * from "./src/sendDirectMessage.ts";
-export * from "./src/suppressEmbeds.ts";
-export * from "./src/threads.ts";
-export * from "./src/sendAutoCompleteChoices.ts";
+export * from "./src/channels.ts";
 export * from "./src/disconnectMember.ts";
 export * from "./src/getMembersPaginated.ts";
 export * from "./src/moveMember.ts";
+export * from "./src/sendAutoCompleteChoices.ts";
+export * from "./src/sendDirectMessage.ts";
+export * from "./src/suppressEmbeds.ts";
+export * from "./src/threads.ts";
